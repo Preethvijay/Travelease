@@ -73,9 +73,3 @@ travelease/
 * Google Maps integration for real-world locations
 * Real-time weather API
 * Travel blogs or reviews
-
----
-
-## 📜 License
-
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
