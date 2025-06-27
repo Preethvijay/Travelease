@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelEase - Your Travel Companion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #330a43 0%, #5b0ab3 100%);
+            color: rgb(255, 255, 255);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+            to { text-shadow: 0 0 20px rgba(61, 12, 75, 0.8); }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-item {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-item:hover::before {
+            left: 100%;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            min-height: 100vh;
+        }
+
+        .section {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://wallsdesk.com/wp-content/uploads/2018/03/Pictures-of-Taj-Mahal.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            border-radius: 11px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            animation: slideInRight 1s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #9500ff, #560270);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgb(77, 2, 142);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(50, 9, 75, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255,107,107,0); }
+            100% { box-shadow: 0 0 0 0 rgba(255,107,107,0); }
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: rgb(255, 255, 255);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(31, 4, 46, 0.683);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #30115f, #2e085d);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .card h3 {
+            color: #3e0d59;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: #000000;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-button {
+            background: linear-gradient(45deg, #714d84, #23054b);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .card-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(60, 27, 117, 0.651);
+        }
+
+        /* Destination Cards */
+        .destination-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .destination-card:hover {
+            transform: scale(1.02);
+        }
+
+        .destination-image {
+            height: 200px;
+            background: linear-gradient(45deg, #5e4972, #38026d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .destination-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 0, 0, 0.119), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .destination-info {
+            padding: 1.5rem;
+        }
+
+        .destination-info h3 {
+            color: #220731;
+            margin-bottom: 0.5rem;
+        }
+
+        .destination-rating {
+            color: #ffae00;
+            margin-bottom: 1rem;
+        }
+
+        .destination-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1c0637;
+            margin-bottom: 1rem;
+        }
+
+        /* Accommodation Cards */
+        .accommodation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .accommodation-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .accommodation-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .accommodation-image {
+            height: 200px;
+            background: linear-gradient(45deg, #5e4972, #38026d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .accommodation-details {
+            padding: 1.5rem;
+        }
+
+        .accommodation-type {
+            background: linear-gradient(45deg, #714d84, #23054b);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        /* Food Cards */
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .food-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .food-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .food-emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: rotate 3s ease-in-out infinite;
+        }
+
+        @keyframes rotate {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        /* Search Bar */
+        .search-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+
+        .search-button {
+            background: linear-gradient(45deg, #714d84, #23054b);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Booking Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            animation: slideInDown 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #491e92;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-input {
+                min-width: 100%;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success Message */
+        .success-message {
+            background: linear-gradient(45deg, #250243, #4a0391);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            text-align: center;
+            animation: slideInUp 0.5s ease;
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">🌍 TravelEase</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item" onclick="showSection('home')">Home</li>
+                    <li class="nav-item" onclick="showSection('destinations')">Destinations</li>
+                    <li class="nav-item" onclick="showSection('accommodation')">Stay</li>
+                    <li class="nav-item" onclick="showSection('food')">Food</li>
+                    <li class="nav-item" onclick="showSection('planner')">Planner</li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Your Perfect Travel Companion</h1>
+                    <p>Discover amazing destinations, find perfect accommodations, and enjoy delicious food</p>
+                    <button class="cta-button" onclick="showSection('destinations')">Start Exploring</button>
+                </div>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">🏨</div>
+                    <h3>Comfortable Stays</h3>
+                    <p>From luxury hotels to cozy tents, find the perfect accommodation for your journey.</p>
+                    <button class="card-button" onclick="showSection('accommodation')">Browse Stays</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🍽️</div>
+                    <h3>Local Cuisine</h3>
+                    <p>Discover authentic local restaurants and street food that will make your trip memorable.</p>
+                    <button class="card-button" onclick="showSection('food')">Find Food</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🗺️</div>
+                    <h3>Amazing Destinations</h3>
+                    <p>Explore breathtaking locations and hidden gems around the world.</p>
+                    <button class="card-button" onclick="showSection('destinations')">Explore Now</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Destinations Section -->
+        <section id="destinations" class="section">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: #333;">Popular Destinations</h2>
+            
+            <div class="search-container">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Search destinations..." id="destinationSearch">
+                    <select class="search-input">
+                        <option>All Categories</option>
+                        <option>Beach</option>
+                        <option>Mountain</option>
+                        <option>City</option>
+                        <option>Adventure</option>
+                    </select>
+                    <button class="search-button" onclick="searchDestinations()">Search</button>
+                </div>
+            </div>
+
+            <div id="destinationsGrid">
+                <div class="destination-card">
+                    <div class="destination-image">🏖️</div>
+                    <div class="destination-info">
+                        <h3>Chennai, Tamilnadu</h3>
+                        <div class="destination-rating">⭐⭐⭐⭐⭐ (4.8/5)</div>
+                        <p>Crystal clear waters and white sandy beaches perfect for relaxation and water sports.</p>
+                        <div class="destination-price">From ₹2999/night</div>
+                        <button class="card-button" onclick="bookDestination('Tropical Paradise Beach')">Book Now</button>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-image">🏔️</div>
+                    <div class="destination-info">
+                        <h3>Kodaikanal, Tamilnadu</h3>
+                        <div class="destination-rating">⭐⭐⭐⭐⭐ (4.9/5)</div>
+                        <p>Breathtaking mountain views with hiking trails and outdoor adventures.</p>
+                        <div class="destination-price">From ₹1999/night</div>
+                        <button class="card-button" onclick="bookDestination('Mountain Adventure Lodge')">Book Now</button>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-image">🏙️</div>
+                    <div class="destination-info">
+                        <h3>Banglore, india</h3>
+                        <div class="destination-rating">⭐⭐⭐⭐ (4.6/5)</div>
+                        <p>Modern city with rich culture, amazing food, and vibrant nightlife.</p>
+                        <div class="destination-price">From ₹1499/night</div>
+                        <button class="card-button" onclick="bookDestination('Urban City Experience')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Accommodation Section -->
+        <section id="accommodation" class="section">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: #333;">Find Your Perfect Stay</h2>
+            
+            <div class="search-container">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Location..." id="locationSearch">
+                    <input type="date" class="search-input" id="checkinDate">
+                    <input type="date" class="search-input" id="checkoutDate">
+                    <select class="search-input" id="guestCount">
+                        <option>1 Guest</option>
+                        <option>2 Guests</option>
+                        <option>3 Guests</option>
+                        <option>4+ Guests</option>
+                    </select>
+                    <button class="search-button" onclick="searchAccommodation()">Search</button>
+                </div>
+            </div>
+
+            <div class="accommodation-grid" id="accommodationGrid">
+                <div class="accommodation-card">
+                    <div class="accommodation-image">🏨</div>
+                    <div class="accommodation-details">
+                        <span class="accommodation-type">Luxury Hotel</span>
+                        <h3>Grand Palace Hotel</h3>
+                        <p>5-star luxury hotel with spa, pool, and fine dining restaurants.</p>
+                        <div class="destination-rating">⭐⭐⭐⭐⭐ (4.9/5)</div>
+                        <div class="destination-price">₹3999/night</div>
+                        <button class="card-button" onclick="bookAccommodation('Grand Palace Hotel')">Book Room</button>
+                    </div>
+                </div>
+
+                <div class="accommodation-card">
+                    <div class="accommodation-image">🏠</div>
+                    <div class="accommodation-details">
+                        <span class="accommodation-type">Cozy Cabin</span>
+                        <h3>Mountain View Cabin</h3>
+                        <p>Rustic cabin with fireplace, perfect for couples and small families.</p>
+                        <div class="destination-rating">⭐⭐⭐⭐ (4.7/5)</div>
+                        <div class="destination-price">₹1599/night</div>
+                        <button class="card-button" onclick="bookAccommodation('Mountain View Cabin')">Book Cabin</button>
+                    </div>
+                </div>
+
+                <div class="accommodation-card">
+                    <div class="accommodation-image">⛺</div>
+                    <div class="accommodation-details">
+                        <span class="accommodation-type">Camping</span>
+                        <h3>Adventure Camping Site</h3>
+                        <p>Fully equipped camping site with facilities and guided tours.</p>
+                        <div class="destination-rating">⭐⭐⭐⭐ (4.5/5)</div>
+                        <div class="destination-price">₹1249/night</div>
+                        <button class="card-button" onclick="bookAccommodation('Adventure Camping Site')">Book Tent</button>
+                    </div>
+                </div>
+
+                <div class="accommodation-card">
+                    <div class="accommodation-image">🏖️</div>
+                    <div class="accommodation-details">
+                        <span class="accommodation-type">Beach Resort</span>
+                        <h3>Sunset Beach Resort</h3>
+                        <p>Beachfront resort with water sports and tropical gardens.</p>
+                        <div class="destination-rating">⭐⭐⭐⭐⭐ (4.8/5)</div>
+                        <div class="destination-price">₹1279/night</div>
+                        <button class="card-button" onclick="bookAccommodation('Sunset Beach Resort')">Book Resort</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Food Section -->
+        <section id="food" class="section">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: #333;">Delicious Local Food</h2>
+            
+            <div class="search-container">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Search restaurants or cuisine..." id="foodSearch">
+                    <select class="search-input">
+                        <option>All Cuisines</option>
+                        <option>Italian</option>
+                        <option>Asian</option>
+                        <option>Mexican</option>
+                        <option>Local</option>
+                        <option>Fast Food</option>
+                    </select>
+                    <button class="search-button" onclick="searchFood()">Find Food</button>
+                </div>
+            </div>
+
+            <div class="food-grid" id="foodGrid">
+                <div class="food-card">
+                    <div class="food-emoji">🍕</div>
+                    <h3>Mama's Italian Kitchen</h3>
+                    <p>Authentic Italian pizza and pasta made with traditional recipes.</p>
+                    <div class="destination-rating">⭐⭐⭐⭐⭐ (4.9/5)</div>
+                    <div class="destination-price">₹15-30 per person</div>
+                    <button class="card-button" onclick="orderFood('Mama\'s Italian Kitchen')">Order Now</button>
+                </div>
+
+                <div class="food-card">
+                    <div class="food-emoji">🍜</div>
+                    <h3>Dragon Noodle House</h3>
+                    <p>Fresh Asian noodles and dumplings with authentic flavors.</p>
+                    <div class="destination-rating">⭐⭐⭐⭐ (4.6/5)</div>
+                    <div class="destination-price">₹12-25 per person</div>
+                    <button class="card-button" onclick="orderFood('Dragon Noodle House')">Order Now</button>
+                </div>
+
+                <div class="food-card">
+                    <div class="food-emoji">🌮</div>
+                    <h3>Fiesta Taco Bar</h3>
+                    <p>Spicy Mexican tacos and burritos with fresh ingredients.</p>
+                    <div class="destination-rating">⭐⭐⭐⭐ (4.7/5)</div>
+                    <div class="destination-price">₹8-20 per person</div>
+                    <button class="card-button" onclick="orderFood('Fiesta Taco Bar')">Order Now</button>
+                </div>
+
+                <div class="food-card">
+                    <div class="food-emoji">🍔</div>
+                    <h3>Burger Paradise</h3>
+                    <p>Gourmet burgers and fries with unique flavor combinations.</p>
+                    <div class="destination-rating">⭐⭐⭐⭐ (4.5/5)</div>
+                    <div class="destination-price">₹10-18 per person</div>
+                    <button class="card-button" onclick="orderFood('Burger Paradise')">Order Now</button>
+                </div>
+
+                <div class="food-card">
+                    <div class="food-emoji">🍣</div>
+                    <h3>Sakura Sushi</h3>
+                    <p>Fresh sushi and sashimi prepared by expert chefs.</p>
+                    <div class="destination-rating">⭐⭐⭐⭐⭐ (4.8/5)</div>
+                    <div class="destination-price">₹25-45 per person</div>
+                    <button class="card-button" onclick="orderFood('Sakura Sushi')">Order Now</button>
+                </div>
+
+                <div class="food-card">
+                    <div class="food-emoji">☕</div>
+                    <h3>Cozy Coffee Corner</h3>
+                    <p>Artisan coffee, pastries, and light breakfast options.</p>
+                    <div class="destination-rating">⭐⭐⭐⭐ (4.4/5)</div>
+                    <div class="destination-price">₹5-15 per person</div>
+                    <button class="card-button" onclick="orderFood('Cozy Coffee Corner')">Order Now</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Travel Planner Section -->
+        <section id="planner" class="section">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: #333;">Plan Your Perfect Trip</h2>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">📅</div>
+                    <h3>Trip Itinerary</h3>
+                    <p>Create detailed day-by-day plans for your journey with recommended activities.</p>
+                    <button class="card-button" onclick="createItinerary()">Create Itinerary</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">💰</div>
+                    <h3>Budget Calculator</h3>
+                    <p>Estimate your travel costs including accommodation, food, and activities.</p>
+                    <button class="card-button" onclick="calculateBudget()">Calculate Budget</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🎒</div>
+                    <h3>Packing Checklist</h3>
+                    <p>Never forget essentials with our smart packing recommendations.</p>
+                    <button class="card-button" onclick="createPackingList()">Create List</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🌤️</div>
+                    <h3>Weather Forecast</h3>
+                    <p>Check weather conditions for your destination and pack accordingly.</p>
+                    <button class="card-button" onclick="checkWeather()">Check Weather</button>
+                </div>
+            </div>
+
+            <div class="search-container">
+                <h3 style="margin-bottom: 1rem;">Quick Trip Planner</h3>
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Destination" id="tripDestination">
+                    <input type="date" class="search-input" id="tripStartDate">
+                    <input type="date" class="search-input" id="tripEndDate">
+                    <input type="number" class="search-input" placeholder="Budget ($)" id="tripBudget">
+                    <button class="search-button" onclick="planTrip()">Plan Trip</button>
+                </div>
+            </div>
+
+            <div id="tripPlan" style="display: none;">
+                <div class="success-message">
+                    <h3>🎉 Your trip plan is ready!</h3>
+                    <p>We've created a personalized itinerary based on your preferences.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Book Your Stay</h2>
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="customerName">Full Name:</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail">Email:</label>
+                    <input type="email" id="customerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Phone:</label>
+                    <input type="tel" id="customerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookingDate">Date:</label>
+                    <input type="date" id="bookingDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="guests">Number of Guests:</label>
+                    <select id="guests" required>
+                        <option value="1">1 Guest</option>
+                        <option value="2">2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4 Guests</option>
+                        <option value="5+">5+ Guests</option>
+                    </select>
+                </div>
+                <button type="submit" class="card-button">
+                    <span id="bookingButtonText">Confirm Booking</span>
+                    <span id="bookingLoader" class="loading" style="display: none;"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentBookingType = '';
+        let currentBookingItem = '';
+
+        // Navigation function
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update URL without page reload
+            history.pushState(null, null, `#${sectionId}`);
+        }
+
+        // Search functions
+        function searchDestinations() {
+            const searchTerm = document.getElementById('destinationSearch').value.toLowerCase();
+            const destinationCards = document.querySelectorAll('.destination-card');
+            
+            destinationCards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeInUp 0.5s ease-out';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            showSearchResults('destinations');
+        }
+
+        function searchAccommodation() {
+            const location = document.getElementById('locationSearch').value;
+            const checkin = document.getElementById('checkinDate').value;
+            const checkout = document.getElementById('checkoutDate').value;
+            const guests = document.getElementById('guestCount').value;
+
+            if (!location || !checkin || !checkout) {
+                alert('Please fill in all search fields');
+                return;
+            }
+
+            // Simulate search with loading animation
+            const searchButton = document.querySelector('#accommodation .search-button');
+            const originalText = searchButton.textContent;
+            searchButton.innerHTML = '<span class="loading"></span> Searching...';
+            searchButton.disabled = true;
+
+            setTimeout(() => {
+                searchButton.textContent = originalText;
+                searchButton.disabled = false;
+                showSearchResults('accommodation');
+            }, 2000);
+        }
+
+        function searchFood() {
+            const searchTerm = document.getElementById('foodSearch').value.toLowerCase();
+            const foodCards = document.querySelectorAll('.food-card');
+            
+            foodCards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeInUp 0.5s ease-out';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            showSearchResults('food');
+        }
+
+        function showSearchResults(type) {
+            // Add visual feedback for search results
+            const container = document.querySelector(`#${type}Grid, .${type}-grid`);
+            if (container) {
+                container.style.animation = 'fadeInUp 0.6s ease-out';
+            }
+        }
+
+        // Booking functions
+        function bookDestination(destinationName) {
+            currentBookingType = 'destination';
+            currentBookingItem = destinationName;
+            document.getElementById('modalTitle').textContent = `Book ${destinationName}`;
+            document.getElementById('bookingModal').style.display = 'block';
+        }
+
+        function bookAccommodation(accommodationName) {
+            currentBookingType = 'accommodation';
+            currentBookingItem = accommodationName;
+            document.getElementById('modalTitle').textContent = `Book ${accommodationName}`;
+            document.getElementById('bookingModal').style.display = 'block';
+        }
+
+        function orderFood(restaurantName) {
+            currentBookingType = 'food';
+            currentBookingItem = restaurantName;
+            document.getElementById('modalTitle').textContent = `Order from ${restaurantName}`;
+            document.getElementById('bookingModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+        }
+
+        // Travel planner functions
+        function createItinerary() {
+            alert('🗓️ Itinerary Creator\n\nThis feature will help you create a detailed day-by-day plan for your trip with recommended activities, restaurants, and attractions!');
+        }
+
+        function calculateBudget() {
+            alert('💰 Budget Calculator\n\nEstimate your travel costs:\n• Accommodation: $50-500/night\n• Food: $30-100/day\n• Activities: $20-200/day\n• Transportation: $10-300/day');
+        }
+
+        function createPackingList() {
+            alert('🎒 Smart Packing List\n\nEssentials for your trip:\n• Clothing (weather appropriate)\n• Documents (passport, tickets)\n• Electronics (chargers, adapters)\n• Toiletries\n• Medications\n• Entertainment');
+        }
+
+        function checkWeather() {
+            alert('🌤️ Weather Forecast\n\nCurrent conditions:\n• Temperature: 75°F (24°C)\n• Conditions: Partly cloudy\n• Humidity: 65%\n• Wind: 8 mph\n\nPerfect weather for outdoor activities!');
+        }
+
+        function planTrip() {
+            const destination = document.getElementById('tripDestination').value;
+            const startDate = document.getElementById('tripStartDate').value;
+            const endDate = document.getElementById('tripEndDate').value;
+            const budget = document.getElementById('tripBudget').value;
+
+            if (!destination || !startDate || !endDate || !budget) {
+                alert('Please fill in all fields to plan your trip');
+                return;
+            }
+
+            // Show trip plan
+            document.getElementById('tripPlan').style.display = 'block';
+            document.getElementById('tripPlan').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Form submission
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const buttonText = document.getElementById('bookingButtonText');
+            const loader = document.getElementById('bookingLoader');
+            
+            // Show loading state
+            buttonText.style.display = 'none';
+            loader.style.display = 'inline-block';
+            
+            // Simulate booking process
+            setTimeout(() => {
+                buttonText.style.display = 'inline';
+                loader.style.display = 'none';
+                
+                alert(`✅ Booking Confirmed!\n\nThank you for booking ${currentBookingItem}!\n\nConfirmation details have been sent to your email.`);
+                closeModal();
+                
+                // Reset form
+                document.getElementById('bookingForm').reset();
+            }, 3000);
+        });
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                showSection(hash);
+            } else {
+                showSection('home');
+            }
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('bookingModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default dates
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const checkinDate = document.getElementById('checkinDate');
+            const checkoutDate = document.getElementById('checkoutDate');
+            const tripStartDate = document.getElementById('tripStartDate');
+            const tripEndDate = document.getElementById('tripEndDate');
+            const bookingDate = document.getElementById('bookingDate');
+            
+            if (checkinDate) checkinDate.value = today.toISOString().split('T')[0];
+            if (checkoutDate) checkoutDate.value = tomorrow.toISOString().split('T')[0];
+            if (tripStartDate) tripStartDate.value = today.toISOString().split('T')[0];
+            if (tripEndDate) tripEndDate.value = tomorrow.toISOString().split('T')[0];
+            if (bookingDate) bookingDate.value = today.toISOString().split('T')[0];
+
+            // Check for hash in URL
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                showSection(hash);
+            }
+        });
+
+        // Add smooth scrolling for better UX
+        function smoothScrollTo(element) {
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
